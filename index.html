@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<title>CCET Personal - TD9100</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --card2:#273449; --line:#334155;
+    --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --accent2:#0ea5e9;
+    --good:#34d399; --warn:#fbbf24; --warnbg:#3a2e12; --goodbg:#0e3a2c;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,"Segoe UI",Tahoma,"Noto Sans Thai","Padauk","Noto Sans Myanmar","Noto Sans Khmer",sans-serif;font-size:16px}
+  .wrap{max-width:640px;margin:0 auto;padding:16px}
+  h1{font-size:19px;margin:0}
+  .sub{color:var(--muted);font-size:13px}
+  .head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .head .logo{font-size:28px}
+  .head .t{flex:1}
+  .langs{display:flex;gap:4px}
+  .langs .lg{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted);
+    border-radius:8px;padding:5px 8px;font-size:12px;font-weight:600}
+  .langs .lg.on{background:var(--accent2);color:#06263a;border-color:var(--accent)}
+  input,button,select{font-size:16px;font-family:inherit}
+  .search{display:flex;gap:8px;margin-bottom:8px}
+  .search input{flex:1;padding:13px 14px;border-radius:12px;border:1px solid var(--line);
+    background:var(--card);color:var(--text);outline:none;text-transform:uppercase;font-weight:700;letter-spacing:.5px}
+  .search input:focus{border-color:var(--accent)}
+  .search button{cursor:pointer;border:none;border-radius:12px;padding:13px 20px;background:var(--accent2);color:#06263a;font-weight:700}
+  .note{color:var(--muted);font-size:12px;margin-bottom:10px}
+  .quick{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;align-items:center}
+  .quick .qb{display:flex;flex-direction:column;gap:1px;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 11px}
+  .quick .qb .qid{font-weight:700;font-size:13px;color:var(--accent)}
+  .quick .qb .qnm{font-size:11px;color:var(--muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .quick .qlabel{font-size:11px;color:var(--muted)}
+
+  .emp{background:linear-gradient(135deg,#1e3a5f,#1e293b);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+  .emp .nm{font-size:20px;font-weight:700}
+  .emp .row{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:6px;font-size:14px;color:var(--muted)}
+  .emp .row b{color:var(--text);font-weight:600}
+  .today{display:flex;align-items:center;gap:8px;border-radius:12px;padding:11px 14px;margin-bottom:14px;font-weight:600;font-size:14.5px}
+  .today.ok{background:var(--goodbg);color:var(--good);border:1px solid #14604a}
+  .today.no{background:var(--warnbg);color:var(--warn);border:1px solid #6b5316}
+  .today .dot{font-size:18px}
+
+  .tabs{display:flex;gap:6px;margin-bottom:12px}
+  .tabs .tb{flex:1;text-align:center;padding:10px 4px;border-radius:10px;background:var(--card);color:var(--muted);font-size:13.5px;font-weight:600;border:1px solid transparent}
+  .tabs .tb.on{background:var(--accent2);color:#06263a;border-color:var(--accent)}
+  .panel{display:none}.panel.on{display:block}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden}
+  th,td{padding:11px 12px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
+  th{background:var(--card2);color:var(--muted);font-weight:600;font-size:12.5px}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  .big{font-size:16px;font-weight:700;color:var(--good)}
+  .code{display:inline-block;min-width:20px;text-align:center;font-weight:700;color:#0f172a;background:var(--accent);border-radius:6px;padding:0 5px;margin-right:7px;font-size:12px}
+  .empty{color:var(--muted);text-align:center;padding:26px 0;font-size:14px}
+  .hint{color:var(--muted);text-align:center;padding:40px 10px;font-size:15px;line-height:1.6}
+  .foot{color:var(--muted);font-size:11.5px;text-align:center;margin-top:18px}
+
+  .otbar{display:flex;gap:8px;margin-bottom:10px}
+  .otbar select{flex:1;padding:9px 10px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+  .seg{display:flex;gap:6px;margin-bottom:12px}
+  .seg .sb{flex:1;text-align:center;padding:8px;border-radius:9px;background:var(--card);color:var(--muted);font-size:12.5px;font-weight:600;border:1px solid var(--line);cursor:pointer}
+  .seg .sb.on{background:var(--accent);color:#0f172a;border-color:var(--accent)}
+  .sum{display:flex;gap:10px;margin-bottom:12px}
+  .sum .box{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:center}
+  .sum .box .t{font-size:12px;color:var(--muted)}
+  .sum .box .v{font-size:22px;font-weight:700;color:var(--good);margin-top:2px}
+  .sum .box .r{font-size:10.5px;color:var(--muted);margin-top:2px}
+  /* โหมด ALL */
+  .pwbox{display:flex;gap:8px;margin:6px 0 10px}
+  .pwbox input{flex:1;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);outline:none}
+  .pwbox input:focus{border-color:var(--accent)}
+  .pwbox button{cursor:pointer;border:none;border-radius:12px;padding:13px 20px;background:var(--accent2);color:#06263a;font-weight:700}
+  tr.miss td{background:var(--warnbg);color:var(--warn)}
+  tr.tot td{font-weight:700;border-top:2px solid var(--line)}
+  .small{color:var(--muted);font-size:12px;font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="logo">🪪</div>
+    <div class="t"><h1>CCET Personal</h1><div class="sub" id="meta">TD9100</div></div>
+    <div class="langs" id="langs"></div>
+  </div>
+
+  <div class="search">
+    <input id="empId" placeholder="" autocomplete="off" inputmode="text">
+    <button id="findBtn"></button>
+  </div>
+  <div class="note" id="note"></div>
+  <div class="quick" id="quick"></div>
+
+  <div id="result"></div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+window.EMBEDDED_DATA = null;
+window.DEMO = false;
+
+// ============ ภาษา (my/km เป็นฉบับร่าง รอเจ้าของภาษาตรวจ) ============
+const I18N = {
+  th:{name:"ไทย", title:"ข้อมูลพนักงาน แผนก", ph:"รหัสพนักงาน เช่น C270311", find:"ค้นหา",
+      note:"ใส่รหัสพนักงานเพื่อดูข้อมูลของพนักงานคนนั้น", freq:"ค้นบ่อย:", id:"รหัส", start:"เริ่มงาน",
+      scanned:"วันนี้สแกนแล้ว — ครั้งแรก", notscan:"วันนี้ยังไม่สแกนนิ้ว",
+      tScan:"สแกนนิ้ว", tOt:"OT", tLeave:"วันลา",
+      date:"วันที่", day:"วัน", time:"เวลา", cin:"เข้า", cout:"ออก", work:"ทำงาน", ot:"OT",
+      type:"ประเภท", qty:"จำนวน", monthly:"รายเดือน (20–19)", weekly:"รายสัปดาห์ (20–4 / 5–19)",
+      p1:"งวด 1", p2:"งวด 2", otsum:"OT รวมงวดนี้", hrs:"ชม.", period:"งวด",
+      noScan:"ไม่มีข้อมูลสแกนนิ้ว", noOt:"ไม่มีข้อมูล OT", noLeave:"ไม่มีข้อมูลวันลา",
+      notfound:"ไม่พบรหัสพนักงาน", asof:"ข้อมูล ณ",
+      allTitle:"ทั้งแผนก", allPh:"รหัสผ่าน ALL", open:"เปิด", badPw:"รหัสผ่านไม่ถูกต้อง",
+      noAll:"ยังไม่ได้ตั้งรหัสผ่าน ALL ในโปรแกรม", people:"คน", scanCount:"วันนี้สแกนแล้ว",
+      notYet:"ยังไม่สแกน", nm:"ชื่อ", firstScan:"สแกนวันนี้", total:"รวมทั้งแผนก",
+      oldData:"ข้อมูลสแกนเป็นของวันที่",
+      stIn:"เข้างาน", stOut:"ออกงาน", shD:"กะกลางวัน", shN:"กะดึก", shift:"กะ", status:"สถานะ",
+      cntIn:"เข้างาน", cntOut:"ออกงาน", cntNone:"ยังไม่สแกน"},
+  en:{name:"EN", title:"Employee info — Dept", ph:"Employee ID e.g. C270311", find:"Search",
+      note:"Enter an employee ID to view that person's info", freq:"Frequent:", id:"ID", start:"Start",
+      scanned:"Scanned today — first at", notscan:"Not scanned today yet",
+      tScan:"Finger scan", tOt:"OT", tLeave:"Leave",
+      date:"Date", day:"Day", time:"Time", cin:"In", cout:"Out", work:"Work", ot:"OT",
+      type:"Type", qty:"Qty", monthly:"Monthly (20–19)", weekly:"Half (20–4 / 5–19)",
+      p1:"Period 1", p2:"Period 2", otsum:"OT this period", hrs:"hrs", period:"Period",
+      noScan:"No scan data", noOt:"No OT data", noLeave:"No leave data",
+      notfound:"Employee ID not found", asof:"As of",
+      allTitle:"Whole dept", allPh:"ALL password", open:"Open", badPw:"Wrong password",
+      noAll:"ALL password is not set in the program", people:"people", scanCount:"Scanned today",
+      notYet:"Not scanned", nm:"Name", firstScan:"Today's scans", total:"Dept total",
+      oldData:"Scan data is from",
+      stIn:"In", stOut:"Out", shD:"Day", shN:"Night", shift:"Shift", status:"Status",
+      cntIn:"In", cntOut:"Out", cntNone:"Not scanned"},
+  my:{name:"မြန်မာ", title:"ဝန်ထမ်းအချက်အလက် — ဌာန", ph:"ဝန်ထမ်း ID ဥပမာ C270311", find:"ရှာဖွေ",
+      note:"ဝန်ထမ်း ID ထည့်၍ ကြည့်ပါ", freq:"မကြာခဏ:", id:"ID", start:"စတင်",
+      scanned:"ယနေ့ စကင်ဖတ်ပြီး — ပထမ", notscan:"ယနေ့ မစကင်ဖတ်ရသေး",
+      tScan:"လက်ဗွေ", tOt:"OT", tLeave:"ခွင့်",
+      date:"ရက်စွဲ", day:"နေ့", time:"အချိန်", cin:"ဝင်", cout:"ထွက်", work:"အလုပ်", ot:"OT",
+      type:"အမျိုးအစား", qty:"အရေအတွက်", monthly:"လစဉ် (20–19)", weekly:"တစ်ဝက် (20–4 / 5–19)",
+      p1:"ကာလ ၁", p2:"ကာလ ၂", otsum:"ဤကာလ OT", hrs:"နာရီ", period:"ကာလ",
+      noScan:"စကင်မရှိ", noOt:"OT မရှိ", noLeave:"ခွင့်မရှိ",
+      notfound:"ဝန်ထမ်း ID မတွေ့", asof:"အချိန်"},
+  km:{name:"ខ្មែរ", title:"ព័ត៌មានបុគ្គលិក — ផ្នែក", ph:"លេខបុគ្គលិក ឧ. C270311", find:"ស្វែងរក",
+      note:"បញ្ចូលលេខបុគ្គលិកដើម្បីមើល", freq:"ញឹកញាប់:", id:"លេខ", start:"ចូលធ្វើការ",
+      scanned:"ថ្ងៃនេះស្កេនហើយ — លើកដំបូង", notscan:"ថ្ងៃនេះមិនទាន់ស្កេន",
+      tScan:"ស្កេនម្រាមដៃ", tOt:"OT", tLeave:"ច្បាប់ឈប់",
+      date:"កាលបរិច្ឆេទ", day:"ថ្ងៃ", time:"ម៉ោង", cin:"ចូល", cout:"ចេញ", work:"ធ្វើការ", ot:"OT",
+      type:"ប្រភេទ", qty:"ចំនួន", monthly:"ប្រចាំខែ (20–19)", weekly:"ពាក់កណ្ដាល (20–4 / 5–19)",
+      p1:"ដំណាក់ ១", p2:"ដំណាក់ ២", otsum:"OT ដំណាក់នេះ", hrs:"ម៉ោង", period:"ដំណាក់",
+      noScan:"គ្មានទិន្នន័យស្កេន", noOt:"គ្មាន OT", noLeave:"គ្មានច្បាប់ឈប់",
+      notfound:"រកមិនឃើញលេខបុគ្គលិក", asof:"គិតត្រឹម"}
+};
+const DAYS = {
+  th:["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"],
+  en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+  my:["တနင်္ဂနွေ","တနင်္လာ","အင်္ဂါ","ဗုဒ္ဓဟူး","ကြာသပတေး","သောကြာ","စနေ"],
+  km:["អាទិត្យ","ច័ន្ទ","អង្គារ","ពុធ","ព្រហស្បតិ៍","សុក្រ","សៅរ៍"]
+};
+// ประเภทลา: label ที่ exporter ส่งมา -> code + ชื่อ 4 ภาษา (my/km ร่าง)
+const LEAVE_DEF = {
+  "ลาพักร้อนทั้งหมด":{code:"J", th:"ลาพักร้อนทั้งหมด", en:"Annual leave (total)", my:"နှစ်ပတ်လည်ခွင့် (စုစုပေါင်း)", km:"ច្បាប់ប្រចាំឆ្នាំ (សរុប)"},
+  "ลาพักร้อนเหลือ":{code:"J", th:"ลาพักร้อนเหลือ", en:"Annual leave (remaining)", my:"နှစ်ပတ်လည်ခွင့် (ကျန်)", km:"ច្បាប់ប្រចាំឆ្នាំ (នៅសល់)"},
+  "ลาป่วย":{code:"E", th:"ลาป่วย", en:"Sick leave", my:"နာမကျန်းခွင့်", km:"ច្បាប់ឈឺ"},
+  "ลากิจ":{code:"D", th:"ลากิจ", en:"Personal leave", my:"ကိုယ်ရေးခွင့်", km:"ច្បាប់ផ្ទាល់ខ្លួន"},
+  "มาสาย (ครั้ง)":{code:"L", th:"มาสาย (ครั้ง)", en:"Late (times)", my:"နောက်ကျ (ကြိမ်)", km:"មកយឺត (ដង)"}
+};
+const PERIODS_BACK = 6;
+
+const SALT=new TextEncoder().encode("ccet-personal-v1"), LOOKUP_PREFIX="CCETP|", LS_KEY="ccetp_freq";
+const SALT_ALL=new TextEncoder().encode("ccet-personal-all-v1");
+let PKG=null, pkgAt=0, lang=localStorage.getItem("ccetp_lang")||"th", curEmp=null, curId=null;
+let curMode="emp", allData=null, allKeys=null, LIVE=null, liveAt=0, allTab="scan";   // allKeys เก็บในหน่วยความจำเท่านั้น ไม่เก็บรหัสผ่าน
+function t(k){ const v=(I18N[lang]||I18N.th)[k]; return v!=null?v:(I18N.en[k]!=null?I18N.en[k]:I18N.th[k]); }
+
+function b64ToBytes(b){ return Uint8Array.from(atob(b),c=>c.charCodeAt(0)); }
+function hx(b){ return Array.from(b).map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function num(x){ const n=parseFloat(x); return isNaN(n)?0:n; }
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dayName(ds){ const d=new Date(ds+'T00:00:00'); return isNaN(d)?'':DAYS[lang][d.getDay()]; }
+
+async function lookupId(emp){ const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(LOOKUP_PREFIX+emp)); return hx(new Uint8Array(d)).slice(0,32); }
+async function deriveKeys(emp,iter,salt){ const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(emp),'PBKDF2',false,['deriveBits']);
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:salt||SALT,iterations:iter,hash:'SHA-256'},base,512); const km=new Uint8Array(bits); return {enc:km.slice(0,32),mac:km.slice(32,64)}; }
+async function ccs1(blob,ek,mk){ if(blob.length<68||String.fromCharCode(blob[0],blob[1],blob[2],blob[3])!=='CCS1') throw new Error('bad');
+  const ms=blob.length-32; const hk=await crypto.subtle.importKey('raw',mk,{name:'HMAC',hash:'SHA-256'},false,['verify']);
+  if(!await crypto.subtle.verify('HMAC',hk,blob.slice(ms),blob.slice(0,ms))) throw new Error(t('notfound'));
+  const ak=await crypto.subtle.importKey('raw',ek,{name:'AES-CBC'},false,['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-CBC',iv:blob.slice(4,20)},ak,blob.slice(20,ms))); }
+async function loadPkg(){ try{const r=await fetch('data.json',{cache:'no-store'}); if(r.ok) return await r.json();}catch(e){} if(window.EMBEDDED_DATA) return window.EMBEDDED_DATA; throw new Error('no data'); }
+// โหลด data.json ใหม่ถ้าเก่ากว่า 1 นาที (ให้เห็นสแกนล่าสุดโดยไม่ต้อง refresh หน้า)
+// live.json = สถานะช่วงพีค (เฉพาะคนที่เพิ่งสแกน) โหลดถี่กว่า data.json
+async function loadLive(){ try{ const r=await fetch('live.json',{cache:'no-store'}); if(r.ok) return await r.json(); }catch(e){} return null; }
+async function getPkg(){ if(!PKG||Date.now()-pkgAt>300000){ PKG=await loadPkg(); pkgAt=Date.now(); }
+  if(Date.now()-liveAt>20000){ LIVE=await loadLive(); liveAt=Date.now(); } return PKG; }
+
+function getFreq(){ try{return JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){return {};} }
+function bump(id,name){ const f=getFreq(); const e=f[id]||{n:0}; e.n++; e.name=name; f[id]=e; try{localStorage.setItem(LS_KEY,JSON.stringify(f));}catch(e){} }
+
+// ---------- OT งวด ----------
+function periods(){ const d=new Date(); let endRef; if(d.getDate()>=20) endRef=new Date(d.getFullYear(),d.getMonth()+1,19); else endRef=new Date(d.getFullYear(),d.getMonth(),19);
+  const out=[]; for(let k=0;k<PERIODS_BACK;k++){ const end=new Date(endRef.getFullYear(),endRef.getMonth()-k,19); const start=new Date(end.getFullYear(),end.getMonth()-1,20);
+    out.push({start,end,label:t('period')+' '+(end.getMonth()+1)+'/'+end.getFullYear()}); } return out; }
+function inR(ds,a,b){ const d=new Date(ds+'T00:00:00'); return d>=a&&d<=b; }
+function sumOt(ot,a,b){ let s=0; ot.forEach(x=>{ if(inR(x.date,a,b)) s+=num(x.act); }); return s; }
+function fmt(d){ return d.getDate()+'/'+(d.getMonth()+1); }
+function otSum(ot,p,mode){
+  if(mode==='week'){ const mid=new Date(p.start.getFullYear(),p.start.getMonth()+1,4); const h2=new Date(p.start.getFullYear(),p.start.getMonth()+1,5);
+    return '<div class="sum"><div class="box"><div class="t">'+t('p1')+'</div><div class="v">'+sumOt(ot,p.start,mid).toFixed(1)+'</div><div class="r">'+fmt(p.start)+' – '+fmt(mid)+'</div></div>'+
+      '<div class="box"><div class="t">'+t('p2')+'</div><div class="v">'+sumOt(ot,h2,p.end).toFixed(1)+'</div><div class="r">'+fmt(h2)+' – '+fmt(p.end)+'</div></div></div>'; }
+  return '<div class="sum"><div class="box"><div class="t">'+t('otsum')+'</div><div class="v">'+sumOt(ot,p.start,p.end).toFixed(1)+' '+t('hrs')+'</div><div class="r">'+fmt(p.start)+' – '+fmt(p.end)+'</div></div></div>';
+}
+
+// ---------- panels ----------
+function scanTable(e){ if(!e.scans||!e.scans.length) return '<div class="empty">'+t('noScan')+'</div>';
+  let r='<table><thead><tr><th>'+t('date')+'</th><th>'+t('day')+'</th><th class="num">'+t('time')+'</th></tr></thead><tbody>';
+  e.scans.forEach(x=> r+='<tr><td>'+esc(x.date)+'</td><td>'+esc(dayName(x.date))+'</td><td class="num">'+esc(x.time)+'</td></tr>'); return r+'</tbody></table>'; }
+function otPanel(e){ if(!e.ot||!e.ot.length) return '<div class="empty">'+t('noOt')+'</div>';
+  const ps=periods();
+  let r='<div class="otbar"><select id="otPeriod">'+ps.map((p,i)=>'<option value="'+i+'">'+esc(p.label)+'</option>').join('')+'</select></div>';
+  r+='<div class="seg"><div class="sb on" data-m="month">'+t('monthly')+'</div><div class="sb" data-m="week">'+t('weekly')+'</div></div>';
+  r+='<div id="otSum"></div><div id="otTbl"></div>'; return r; }
+function otRender(e){ const i=+document.getElementById('otPeriod').value; const p=periods()[i];
+  const mode=document.querySelector('.seg .sb.on').dataset.m;
+  document.getElementById('otSum').innerHTML=otSum(e.ot,p,mode);
+  const rows=e.ot.filter(x=>inR(x.date,p.start,p.end));
+  let r='<table><thead><tr><th>'+t('date')+'</th><th class="num">'+t('cin')+'</th><th class="num">'+t('cout')+'</th><th class="num">'+t('work')+'</th></tr></thead><tbody>';
+  if(!rows.length) r+='<tr><td colspan="4" style="text-align:center;color:var(--muted)">—</td></tr>';
+  rows.forEach(x=> r+='<tr><td>'+esc(x.date)+'</td><td class="num">'+esc(x.in)+'</td><td class="num">'+esc(x.out)+'</td><td class="num big">'+esc(x.act)+'</td></tr>');
+  document.getElementById('otTbl').innerHTML=r+'</tbody></table>'; }
+function leaveTable(e){ if(!e.leave||!e.leave.length) return '<div class="empty">'+t('noLeave')+'</div>';
+  let r='<table><thead><tr><th>'+t('type')+'</th><th class="num">'+t('qty')+'</th></tr></thead><tbody>';
+  e.leave.forEach(x=>{ const d=LEAVE_DEF[x.label]; const label=d?(d[lang]||d.th):x.label; const badge=d?'<span class="code">'+esc(d.code)+'</span>':'';
+    r+='<tr><td>'+badge+esc(label)+'</td><td class="num big">'+esc(x.value)+'</td></tr>'; }); return r+'</tbody></table>'; }
+// กะ: D = กลางวัน, N = ดึก (โปรแกรมคำนวณจากเช้าวันจันทร์ของสัปดาห์) ; ไม่รู้กะ -> ดูจากสแกนวันนี้
+// สถานะ: in = เข้างาน, out = ออกงาน, none = ยังไม่สแกน (ควรมาแล้ว), idle = ยังไม่ถึงกะ
+const B_DAY='08:00:00', B_NIGHT='20:00:00', NOON='12:00:00';
+function shiftStatus(sh, times){ const T=(times||[]).slice().sort(), pm=new Date().getHours()>=12;
+  if(!sh) sh = T.some(x=>x<B_DAY) ? 'D' : (T.some(x=>x>=B_DAY&&x<NOON) ? 'N' : '');
+  if(!pm){ const am=T.filter(x=>x<NOON);
+    if(sh==='N') return am.length? {sh,st:'out',t:am[0]} : {sh,st:'idle'};          // กะดึกกลับบ้านตอนเช้า
+    return am.length? {sh,st:'in',t:am[0]} : {sh,st:'none'}; }                       // กะกลางวันมาเข้างาน
+  if(sh==='D') return T.length? {sh,st:'in',t:T[0]} : {sh,st:'none'};
+  const E=T.filter(x=>x>=NOON); if(!E.length) return {sh,st:'none'};                // กะดึกยังไม่มา
+  return E[0]<B_NIGHT? {sh,st:'in',t:E[0]} : {sh,st:'out',t:E[0]}; }
+function shLabel(sh){ return sh==='D'?t('shD'):sh==='N'?t('shN'):'-'; }
+
+function todayBanner(e){ const td=todayStr(); const T=(e.scans||[]).filter(x=>x.date===td).map(x=>x.time);
+  const r=shiftStatus(e.shift, T), shTxt=r.sh?' ('+esc(shLabel(r.sh))+')':'';
+  if(r.st==='in'||r.st==='out') return '<div class="today ok"><span class="dot">✓</span>'+esc(t(r.st==='in'?'stIn':'stOut'))+' '+esc(r.t)+shTxt+'</div>';
+  if(r.st==='idle') return '<div class="today"><span class="dot">·</span>'+esc(t('notscan'))+shTxt+'</div>';
+  return '<div class="today no"><span class="dot">!</span>'+esc(t('notscan'))+shTxt+'</div>'; }
+
+function renderEmp(){ if(!curEmp) return; const e=curEmp, id=curId; const box=document.getElementById('result');
+  box.innerHTML='<div class="emp"><div class="nm">'+esc(e.name)+'</div><div class="row"><span>'+t('id')+' <b>'+esc(id)+'</b></span>'+
+    (e.startDate?'<span>'+t('start')+' <b>'+esc(e.startDate)+'</b></span>':'')+'</div></div>'+todayBanner(e)+
+    '<div class="tabs"><div class="tb on" data-p="scan">'+t('tScan')+'</div><div class="tb" data-p="ot">'+t('tOt')+'</div><div class="tb" data-p="leave">'+t('tLeave')+'</div></div>'+
+    '<div class="panel on" id="p-scan">'+scanTable(e)+'</div><div class="panel" id="p-ot">'+otPanel(e)+'</div><div class="panel" id="p-leave">'+leaveTable(e)+'</div>';
+  box.querySelectorAll('.tb').forEach(tb=> tb.onclick=()=>{ box.querySelectorAll('.tb').forEach(x=>x.classList.remove('on')); box.querySelectorAll('.panel').forEach(x=>x.classList.remove('on')); tb.classList.add('on'); box.querySelector('#p-'+tb.dataset.p).classList.add('on'); });
+  if(e.ot&&e.ot.length){ document.getElementById('otPeriod').onchange=()=>otRender(e);
+    box.querySelectorAll('.seg .sb').forEach(sb=> sb.onclick=()=>{ box.querySelectorAll('.seg .sb').forEach(x=>x.classList.remove('on')); sb.classList.add('on'); otRender(e); });
+    otRender(e); }
+}
+
+// ================= โหมด ALL (ทั้งแผนก — ต้องใช้รหัสผ่าน) =================
+function wireTabs(box){ box.querySelectorAll('.tb').forEach(tb=> tb.onclick=()=>{ if(curMode==='all') allTab=tb.dataset.p; box.querySelectorAll('.tb').forEach(x=>x.classList.remove('on')); box.querySelectorAll('.panel').forEach(x=>x.classList.remove('on')); tb.classList.add('on'); box.querySelector('#p-'+tb.dataset.p).classList.add('on'); }); }
+
+async function showAll(){ const box=document.getElementById('result');
+  if(!PKG.all){ box.innerHTML='<div class="empty">'+esc(t('noAll'))+'</div>'; return; }
+  if(allKeys){ try{ await openAll(); return; }catch(e){ allKeys=null; } }
+  box.innerHTML='<div class="pwbox"><input type="password" id="allPw" placeholder="'+esc(t('allPh'))+'" autocomplete="current-password"><button id="allGo">'+esc(t('open'))+'</button></div><div id="allMsg"></div>';
+  const go=async()=>{ const pw=document.getElementById('allPw').value; if(!pw) return;
+    document.getElementById('allMsg').innerHTML='<div class="hint">...</div>';
+    try{ allKeys=await deriveKeys(pw,PKG.iter||100000,SALT_ALL); await openAll(); bump('ALL',t('allTitle')); renderQuick(); }
+    catch(e){ allKeys=null; const m=document.getElementById('allMsg'); if(m) m.innerHTML='<div class="empty">'+esc(t('badPw'))+'</div>'; } };
+  document.getElementById('allGo').onclick=go;
+  document.getElementById('allPw').addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+  document.getElementById('allPw').focus(); }
+
+async function openAll(){ allData=JSON.parse(await ccs1(b64ToBytes(PKG.all),allKeys.enc,allKeys.mac));
+  const td=todayStr();
+  if(LIVE&&LIVE.date===td&&LIVE.all){ try{ const m=(JSON.parse(await ccs1(b64ToBytes(LIVE.all),allKeys.enc,allKeys.mac)).scans)||{};
+      if(allData.date!==td){ (allData.people||[]).forEach(p=>p.scans=[]); allData.date=td; }
+      (allData.people||[]).forEach(p=>{ const tm=m[p.emp]; if(tm&&!(p.scans||[]).includes(tm)) p.scans=(p.scans||[]).concat([tm]).sort(); });
+    }catch(e){} }
+  renderAll(); }
+// หน้า ALL แท็บสแกนนิ้ว: อัปเดตเองทุก 1 นาที (เฉพาะตอนเปิดหน้าจออยู่)
+setInterval(async()=>{ if(curMode==='all'&&allKeys&&allTab==='scan'&&document.visibilityState==='visible'){ try{ await getPkg(); await openAll(); }catch(e){} } },60000);
+
+// ลำดับพนักงานในหน้า ALL: เรียงตามวันเริ่มงานที่โรงงาน (ทำงานนานสุดก่อน) วันเดียวกันเรียงตามรหัส
+function orderPeople(ppl){ return ppl.slice().sort((x,y)=>{
+  const a=x.start||'9999', b=y.start||'9999';
+  if(a!==b) return a<b?-1:1;
+  return x.emp<y.emp?-1:x.emp>y.emp?1:0; }); }
+function nameCell(p){ return esc(p.name)+(p.start?'<div class="small">'+esc(t('start'))+' '+esc(p.start)+'</div>':''); }
+
+function allScanTable(ppl){
+  const rows=orderPeople(ppl);
+  let r='<table><thead><tr><th>'+t('nm')+'</th><th>'+t('id')+'</th><th>'+t('shift')+'</th><th class="num">'+t('status')+'</th></tr></thead><tbody>';
+  rows.forEach(p=>{ const s=(p.scans||[]).slice().sort(), x=shiftStatus(p.sh,s), rest=s.filter(v=>v!==x.t);
+    const main = x.st==='in' ? '<span class="big">'+esc(t('stIn'))+' '+esc(x.t)+'</span>'
+               : x.st==='out' ? esc(t('stOut'))+' '+esc(x.t)
+               : x.st==='none' ? esc(t('notYet')) : '-';
+    r+='<tr'+(x.st==='none'?' class="miss"':'')+'><td>'+nameCell(p)+'</td><td>'+esc(p.emp)+'</td><td>'+esc(shLabel(x.sh))+'</td><td class="num">'+main+
+       (rest.length?'<div class="small">'+esc(rest.join(', '))+'</div>':'')+'</td></tr>'; });
+  return r+'</tbody></table>'; }
+
+function sumArr(ot,a,b){ let s=0; (ot||[]).forEach(x=>{ if(inR(x[0],a,b)) s+=num(x[1]); }); return s; }
+
+function allOtRender(){ if(!allData) return; const p=periods()[+document.getElementById('otPeriod').value];
+  const mode=document.querySelector('.seg .sb.on').dataset.m, ppl=orderPeople(allData.people||[]); let r, s1=0, s2=0;
+  if(mode==='week'){ const mid=new Date(p.start.getFullYear(),p.start.getMonth()+1,4), h2=new Date(p.start.getFullYear(),p.start.getMonth()+1,5);
+    r='<table><thead><tr><th>'+t('nm')+'</th><th>'+t('id')+'</th><th class="num">'+t('p1')+'<div class="small">'+fmt(p.start)+'–'+fmt(mid)+'</div></th><th class="num">'+t('p2')+'<div class="small">'+fmt(h2)+'–'+fmt(p.end)+'</div></th></tr></thead><tbody>';
+    ppl.forEach(x=>{ const a=sumArr(x.ot,p.start,mid), b=sumArr(x.ot,h2,p.end); s1+=a; s2+=b;
+      r+='<tr><td>'+nameCell(x)+'</td><td>'+esc(x.emp)+'</td><td class="num big">'+a.toFixed(1)+'</td><td class="num big">'+b.toFixed(1)+'</td></tr>'; });
+    r+='<tr class="tot"><td colspan="2">'+t('total')+'</td><td class="num big">'+s1.toFixed(1)+'</td><td class="num big">'+s2.toFixed(1)+'</td></tr>';
+  } else {
+    r='<table><thead><tr><th>'+t('nm')+'</th><th>'+t('id')+'</th><th class="num">'+t('otsum')+'<div class="small">'+fmt(p.start)+'–'+fmt(p.end)+'</div></th></tr></thead><tbody>';
+    ppl.forEach(x=>{ const a=sumArr(x.ot,p.start,p.end); s1+=a;
+      r+='<tr><td>'+nameCell(x)+'</td><td>'+esc(x.emp)+'</td><td class="num big">'+a.toFixed(1)+'</td></tr>'; });
+    r+='<tr class="tot"><td colspan="2">'+t('total')+'</td><td class="num big">'+s1.toFixed(1)+'</td></tr>';
+  }
+  document.getElementById('allOt').innerHTML=r+'</tbody></table>'; }
+
+function renderAll(){ if(!allData) return; allTab='scan'; const a=allData, ppl=a.people||[], box=document.getElementById('result');
+  const st=ppl.map(p=>shiftStatus(p.sh,(p.scans||[]).slice().sort()).st);
+  const nIn=st.filter(x=>x==='in').length, nOut=st.filter(x=>x==='out').length, nNone=st.filter(x=>x==='none').length, all=nNone===0;
+  const ps=periods();
+  box.innerHTML='<div class="emp"><div class="nm">'+esc(t('allTitle'))+' '+esc(PKG.dept||'')+'</div><div class="row"><span><b>'+ppl.length+'</b> '+esc(t('people'))+'</span><span>'+esc(t('asof'))+' <b>'+esc(PKG.updated||'-')+'</b></span></div></div>'+
+    '<div class="today '+(all?'ok':'no')+'"><span class="dot">'+(all?'✓':'!')+'</span>'+esc(t('cntIn'))+' '+nIn+' · '+esc(t('cntOut'))+' '+nOut+' · '+esc(t('cntNone'))+' '+nNone+(LIVE&&LIVE.date===todayStr()&&LIVE.updated?' <span class="small">(live '+esc(LIVE.updated.slice(11))+')</span>':'')+'</div>'+
+    (a.date!==todayStr()?'<div class="note">'+esc(t('oldData'))+' '+esc(a.date)+'</div>':'')+
+    '<div class="tabs"><div class="tb on" data-p="scan">'+t('tScan')+'</div><div class="tb" data-p="ot">'+t('tOt')+'</div><div class="tb" data-p="leave">'+t('tLeave')+'</div></div>'+
+    '<div class="panel on" id="p-scan">'+allScanTable(ppl)+'</div>'+
+    '<div class="panel" id="p-ot"><div class="otbar"><select id="otPeriod">'+ps.map((p,i)=>'<option value="'+i+'">'+esc(p.label)+'</option>').join('')+'</select></div>'+
+      '<div class="seg"><div class="sb on" data-m="month">'+t('monthly')+'</div><div class="sb" data-m="week">'+t('weekly')+'</div></div><div id="allOt"></div></div>'+
+    '<div class="panel" id="p-leave"></div>';
+  wireTabs(box);
+  document.getElementById('otPeriod').onchange=allOtRender;
+  box.querySelectorAll('.seg .sb').forEach(sb=> sb.onclick=()=>{ box.querySelectorAll('.seg .sb').forEach(x=>x.classList.remove('on')); sb.classList.add('on'); allOtRender(); });
+  allOtRender(); }
+
+function renderChrome(){
+  document.documentElement.lang=lang;
+  document.getElementById('empId').placeholder=t('ph');
+  document.getElementById('findBtn').textContent=t('find');
+  document.getElementById('note').textContent=t('note');
+  document.getElementById('meta').textContent=t('title')+' '+(PKG&&PKG.dept?PKG.dept:'TD9100');
+  if(PKG) document.getElementById('foot').textContent=t('asof')+' '+(PKG.updated||'-');
+  // language buttons
+  document.getElementById('langs').innerHTML=Object.keys(I18N).map(k=>'<div class="lg'+(k===lang?' on':'')+'" data-l="'+k+'">'+I18N[k].name+'</div>').join('');
+  document.querySelectorAll('.langs .lg').forEach(b=> b.onclick=()=>{ lang=b.dataset.l; localStorage.setItem('ccetp_lang',lang); renderChrome(); renderQuick(); if(curMode==='all') renderAll(); else renderEmp(); });
+}
+function renderQuick(){ let f=getFreq(); if(window.DEMO&&!Object.keys(f).length) f={C270311:{n:5,name:"DUANGKAM"},C270145:{n:2,name:"SOMCHAI"}};
+  const top=Object.keys(f).map(id=>({id,...f[id]})).sort((a,b)=>b.n-a.n).slice(0,4); const box=document.getElementById('quick');
+  box.innerHTML = top.length? '<span class="qlabel">'+t('freq')+'</span>'+top.map(e=>'<div class="qb" data-id="'+esc(e.id)+'"><span class="qid">'+esc(e.id)+'</span><span class="qnm">'+esc(e.name||'')+'</span></div>').join('') : '';
+  box.querySelectorAll('.qb').forEach(b=> b.onclick=()=>{ document.getElementById('empId').value=b.dataset.id; find(); }); }
+
+async function find(){ const id=document.getElementById('empId').value.trim().toUpperCase(); const box=document.getElementById('result');
+  if(!id){ box.innerHTML=''; return; } box.innerHTML='<div class="hint">...</div>';
+  try{ await getPkg(); renderChrome();
+    if(id==='ALL'){ curMode='all'; curEmp=null; await showAll(); return; }
+    curMode='emp';
+    const lid=await lookupId(id); const b=(PKG.records||{})[lid];
+    if(!b){ curEmp=null; box.innerHTML='<div class="empty">'+t('notfound')+' '+esc(id)+'</div>'; return; }
+    const k=await deriveKeys(id,PKG.iter||100000); curEmp=JSON.parse(await ccs1(b64ToBytes(b),k.enc,k.mac)); curId=id;
+    const td=todayStr(), lv=LIVE&&LIVE.date===td&&LIVE.records&&LIVE.records[lid];
+    if(lv){ try{ const o=JSON.parse(await ccs1(b64ToBytes(lv),k.enc,k.mac));
+      if(o&&o.t&&!(curEmp.scans||[]).some(x=>x.date===td&&x.time===o.t)) curEmp.scans=[{date:td,time:o.t}].concat(curEmp.scans||[]); }catch(e){} }
+    renderEmp(); bump(id,curEmp.name); renderQuick();
+  }catch(e){ box.innerHTML='<div class="empty">'+esc(e.message)+'</div>'; } }
+
+document.getElementById('findBtn').onclick=find;
+document.getElementById('empId').addEventListener('keydown',e=>{ if(e.key==='Enter') find(); });
+renderChrome(); renderQuick(); document.getElementById('empId').focus();
+</script>
+</body>
+</html>
